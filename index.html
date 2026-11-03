@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Clone Success!</title>
+    <!-- Google Fonts: Prompt & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Glowing Orbs -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <main class="container">
+        <div class="card" id="main-card">
+            <!-- Terminal Header Bar -->
+            <div class="terminal-bar">
+                <div class="dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                </div>
+                <div class="terminal-title">bash — git clone</div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="card-content">
+                <!-- Animated Checkmark SVG -->
+                <div class="icon-wrapper">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                        <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
+                </div>
+
+                <!-- Badge -->
+                <div class="badge">STATUS: 200 OK</div>
+
+                <!-- Main Requested Text -->
+                <h1 class="title">ยินดีด้วย คุณ Clone สำเร็จแล้ว</h1>
+                <p class="subtitle">นี่คือผลลัพธ์ของการ Clone</p>
+
+                <!-- Simulated Terminal Output -->
+                <div class="code-box">
+                    <div class="code-line"><span class="prompt">$</span> git clone repository.git</div>
+                    <div class="code-line muted">Cloning into 'git-example'...</div>
+                    <div class="code-line muted">remote: Enumerating objects: 100%, done.</div>
+                    <div class="code-line success">Receiving objects: 100% (42/42), done. ✨</div>
+                </div>
+
+                <!-- Interactive Celebration Button -->
+                <button id="celebrate-btn" class="btn-celebrate">
+                    <span class="btn-icon">🎉</span> ฉลองความสำเร็จอีกครั้ง!
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- GSAP for Smooth Timeline Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- Canvas Confetti for Celebration Effects -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <script>
+        // Function to launch confetti
+        function fireConfetti() {
+            const count = 200;
+            const defaults = {
+                origin: { y: 0.7 },
+                zIndex: 1000
+            };
+
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+
+            fire(0.25, { spread: 26, startVelocity: 55 });
+            fire(0.2, { spread: 60 });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+            fire(0.1, { spread: 120, startVelocity: 45 });
+        }
+
+        // GSAP Entrance Animation
+        window.addEventListener('DOMContentLoaded', () => {
+            const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+            tl.fromTo(".card", 
+                { y: 60, opacity: 0, scale: 0.92 }, 
+                { y: 0, opacity: 1, scale: 1, duration: 0.9 }
+            )
+            .fromTo(".icon-wrapper", 
+                { scale: 0, rotation: -45 }, 
+                { scale: 1, rotation: 0, duration: 0.6, ease: "back.out(1.8)" }, 
+                "-=0.4"
+            )
+            .fromTo(".badge", 
+                { y: 15, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 0.4 }, 
+                "-=0.3"
+            )
+            .fromTo(".title", 
+                { y: 25, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 0.6 }, 
+                "-=0.2"
+            )
+            .fromTo(".subtitle", 
+                { y: 20, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 0.6 }, 
+                "-=0.4"
+            )
+            .fromTo(".code-box", 
+                { y: 20, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 0.6 }, 
+                "-=0.4"
+            )
+            .fromTo(".code-line", 
+                { x: -15, opacity: 0 }, 
+                { x: 0, opacity: 1, stagger: 0.12, duration: 0.4 }, 
+                "-=0.3"
+            )
+            .fromTo(".btn-celebrate", 
+                { y: 15, opacity: 0, scale: 0.9 }, 
+                { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.5)" }, 
+                "-=0.2"
+            )
+            .add(() => {
+                fireConfetti();
+            }, "-=0.6");
+
+            // 3D Tilt Hover Effect on Card
+            const card = document.getElementById('main-card');
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                gsap.to(card, {
+                    rotationY: x * 0.02,
+                    rotationX: -y * 0.02,
+                    transformPerspective: 1000,
+                    ease: "power2.out",
+                    duration: 0.4
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    rotationY: 0,
+                    rotationX: 0,
+                    ease: "elastic.out(1, 0.5)",
+                    duration: 0.8
+                });
+            });
+
+            // Button click trigger
+            const btn = document.getElementById('celebrate-btn');
+            btn.addEventListener('click', () => {
+                fireConfetti();
+                gsap.fromTo(btn, 
+                    { scale: 0.92 }, 
+                    { scale: 1, duration: 0.4, ease: "elastic.out(1.2, 0.4)" }
+                );
+            });
+        });
+    </script>
+</body>
+</html>
+
